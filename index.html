@@ -10,23 +10,19 @@ body {
     background: linear-gradient(#ffe6f0, #fff);
     font-family: Arial, sans-serif;
     color: #5a004a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
     text-align: center;
-    overflow: hidden;
 }
 
 #contenedor {
     max-width: 90%;
+    margin: 40px auto;
 }
 
 #carta {
     font-size: 1.15em;
     white-space: pre-line;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 button {
@@ -46,7 +42,7 @@ button:hover {
 
 #respuesta {
     font-size: 1.4em;
-    margin-top: 20px;
+    margin-top: 25px;
     display: none;
 }
 
@@ -54,6 +50,7 @@ button:hover {
     position: fixed;
     animation: flotar 6s linear infinite;
     color: pink;
+    pointer-events: none;
 }
 
 @keyframes flotar {
@@ -68,14 +65,13 @@ button:hover {
 <div id="contenedor">
     <div id="carta"></div>
 
-    <button onclick="reproducir()">▶️ Reproducir canción</button>
-    <br><br>
+    <button onclick="reproducir()">▶️ Reproducir canción</button><br>
     <button onclick="acepta()">💖 Sí, acepto</button>
 
     <div id="respuesta">Gracias por elegirme, Tiana 💖</div>
 </div>
 
-<audio id="musica">
+<audio id="musica" preload="auto">
     <source src="https://drive.google.com/uc?export=download&id=1OghEAl43dfKdTJo8cUlkgAkOtVdiQKER" type="audio/mpeg">
 </audio>
 
@@ -108,6 +104,7 @@ const musica = document.getElementById("musica");
 function escribir() {
     if (i < mensaje.length) {
         carta.innerHTML += mensaje.charAt(i);
+        window.scrollTo(0, document.body.scrollHeight);
         i++;
         setTimeout(escribir, 40);
     } else {
@@ -117,8 +114,11 @@ function escribir() {
 escribir();
 
 function reproducir() {
+    musica.load();
     musica.volume = 1.0;
-    musica.play();
+    musica.play().catch(() => {
+        alert("Toca nuevamente el botón ▶️ para reproducir la canción 💖");
+    });
 }
 
 function bajarVolumen() {
@@ -140,7 +140,7 @@ function acepta() {
 
 function lluviaCorazones() {
     setInterval(() => {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             const c = document.createElement("div");
             c.className = "corazon";
             c.innerHTML = "❤️";
