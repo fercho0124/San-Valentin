@@ -6,34 +6,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
 body {
     background: linear-gradient(#ffe6f0, #fff);
     font-family: Arial, sans-serif;
     color: #5a004a;
-    margin: 0;
     text-align: center;
 }
 
 #contenedor {
     max-width: 90%;
-    margin: 40px auto;
+    margin: 30px auto 120px;
 }
 
 #carta {
     font-size: 1.15em;
     white-space: pre-line;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 button {
     background-color: #ff4d88;
     color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
+    padding: 14px 28px;
+    border-radius: 30px;
     font-size: 1em;
     cursor: pointer;
-    margin: 8px;
+    margin: 10px;
 }
 
 button:hover {
@@ -42,20 +49,23 @@ button:hover {
 
 #respuesta {
     font-size: 1.4em;
-    margin-top: 25px;
+    margin-top: 30px;
     display: none;
 }
 
 .corazon {
     position: fixed;
-    animation: flotar 6s linear infinite;
+    top: -10%;
+    animation: caer 6s linear infinite;
     color: pink;
     pointer-events: none;
 }
 
-@keyframes flotar {
-    from { bottom: -10%; opacity: 1; }
-    to { bottom: 110%; opacity: 0; }
+@keyframes caer {
+    to {
+        top: 110%;
+        opacity: 0;
+    }
 }
 </style>
 </head>
@@ -72,7 +82,7 @@ button:hover {
 </div>
 
 <audio id="musica" preload="auto">
-    <source src="https://drive.google.com/uc?export=download&id=1OghEAl43dfKdTJo8cUlkgAkOtVdiQKER" type="audio/mpeg">
+    <source src="Lo%20mejor%20que%20hay%20en%20mi%20vida%20Letra.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -104,33 +114,19 @@ const musica = document.getElementById("musica");
 function escribir() {
     if (i < mensaje.length) {
         carta.innerHTML += mensaje.charAt(i);
-        window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
         i++;
         setTimeout(escribir, 40);
-    } else {
-        bajarVolumen();
     }
 }
 escribir();
 
 function reproducir() {
-    musica.load();
-    musica.volume = 1.0;
+    musica.currentTime = 0;
+    musica.volume = 1;
     musica.play().catch(() => {
         alert("Toca nuevamente el botón ▶️ para reproducir la canción 💖");
     });
-}
-
-function bajarVolumen() {
-    let vol = musica.volume;
-    const fade = setInterval(() => {
-        if (vol > 0.3) {
-            vol -= 0.02;
-            musica.volume = vol;
-        } else {
-            clearInterval(fade);
-        }
-    }, 200);
 }
 
 function acepta() {
@@ -149,7 +145,7 @@ function lluviaCorazones() {
             document.body.appendChild(c);
             setTimeout(() => c.remove(), 6000);
         }
-    }, 300);
+    }, 400);
 }
 </script>
 
