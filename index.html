@@ -23,7 +23,7 @@ body {
 
 #contenedor {
     max-width: 90%;
-    margin: 30px auto 120px;
+    margin: 30px auto 140px;
 }
 
 #carta {
@@ -43,8 +43,12 @@ button {
     margin: 10px;
 }
 
+button.no {
+    background-color: #b0a0a8;
+}
+
 button:hover {
-    background-color: #e6005c;
+    opacity: 0.9;
 }
 
 #respuesta {
@@ -75,10 +79,12 @@ button:hover {
 <div id="contenedor">
     <div id="carta"></div>
 
-    <button onclick="reproducir()">▶️ Reproducir canción</button><br>
-    <button onclick="acepta()">💖 Sí, acepto</button>
+    <div id="botones">
+        <button onclick="acepta()">💖 Sí, acepto</button>
+        <button class="no" onclick="noAcepta()">💔 No acepto</button>
+    </div>
 
-    <div id="respuesta">Gracias por elegirme, Tiana 💖</div>
+    <div id="respuesta"></div>
 </div>
 
 <audio id="musica" preload="auto">
@@ -110,6 +116,8 @@ Lo mejor que hay en mi vida eres tú.
 let i = 0;
 const carta = document.getElementById("carta");
 const musica = document.getElementById("musica");
+const respuesta = document.getElementById("respuesta");
+const botones = document.getElementById("botones");
 
 function escribir() {
     if (i < mensaje.length) {
@@ -121,17 +129,24 @@ function escribir() {
 }
 escribir();
 
-function reproducir() {
-    musica.currentTime = 0;
-    musica.volume = 1;
-    musica.play().catch(() => {
-        alert("Toca nuevamente el botón ▶️ para reproducir la canción 💖");
-    });
+function acepta() {
+    botones.style.display = "none";
+    respuesta.style.display = "block";
+    respuesta.innerHTML = 
+        "Perfecto mi amor 💖<br><br>" +
+        "Mañana domingo tenemos una cena para los dos en <b>Sion Gardens</b> 🌹<br>" +
+        "Paso por ti a las <b>8:00 pm</b> ✨";
+    musica.play();
+    lluviaCorazones();
 }
 
-function acepta() {
-    document.getElementById("respuesta").style.display = "block";
-    lluviaCorazones();
+function noAcepta() {
+    botones.style.display = "none";
+    respuesta.style.display = "block";
+    respuesta.innerHTML = 
+        "Espero de corazón 💔<br><br>" +
+        "que puedas encontrar a tu persona ideal,<br>" +
+        "y que te queden buenos recuerdos de lo que vivimos.";
 }
 
 function lluviaCorazones() {
